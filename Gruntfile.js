@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
-  grunt.loadNpmTasks('grunt-tsconfig');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-typescript');
 
@@ -37,26 +36,48 @@ module.exports = function(grunt) {
         src: ['src/public/partials/**'],
         dest: 'dist/partials/'
       },
-      javascript: {
-        expand: true,
-        flatten: true,
-        src: ['ts/**/*.js'],
-        dest: 'dist/'
-      },
       statics: {
         expand: true,
         src: ['plugin.json', 'LICENSE'],
         dest: 'dist/'
       }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets:  ["es2015"],
+        plugins: ['transform-es2015-modules-systemjs', "transform-es2015-for-of"],
+      },
+      js: {
+        files: [{
+          cwd: 'src/public',
+          expand: true,
+          src: ['**/*.js'],
+          dest: 'dist',
+          ext:'.js'
+        }]
+      },
+      ts: {
+        files: [{
+          cwd: 'ts',
+          expand: true,
+          src: ['**/*.js'],
+          dest: 'dist',
+          ext:'.js'
+        }]
+      }
     }
+
   });
 
   grunt.registerTask('default', [
     'clean',
     'copy:typescript',
     'typescript:build',
-    'copy:javascript',
+    //'copy:javascript',
     'copy:html',
     'copy:statics',
+    'babel'
   ]);
-}
+};
