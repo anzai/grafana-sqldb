@@ -50,30 +50,12 @@ module.exports = function(grunt) {
           noImplicitAny: false,
         }
       }
-    },
-
-    babel: {
-      options: {
-        sourceMap: true,
-        presets:  ["es2015"],
-        plugins: ['transform-es2015-modules-systemjs', "transform-es2015-for-of"],
-      },
-      js: {
-        files: [{
-          expand: true,
-          cwd: 'src_gen',
-          src: ['**/*.js'],
-          dest: 'src_gen/',
-          ext:'.js'
-        }]
-      }
     }
   });
 
   grunt.registerTask('default', [
     'clean',
     'copy:src_js',
-    //'babel:js',
     'typescript:build',
     'copy:dist_js',
     'copy:dist_html',
